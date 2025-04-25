@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         DOCKER_IMAGE = 'palak081/node-app'
-        DOCKER_CREDENTIALS_ID = 'docker-hub-creds'  // Jenkins credentials ID
+        DOCKER_CREDENTIALS_ID = 'docker-hub-creds'
     }
 
     stages {
@@ -16,7 +16,10 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    dockerImage = docker.build("${DOCKER_IMAGE}:latest")
+                    // Declare dockerImage properly
+                    def dockerImage = docker.build("${DOCKER_IMAGE}:latest")
+                    // Store it in the environment for later use
+                    env.IMAGE_NAME = dockerImage.imageName()
                 }
             }
         }
@@ -24,8 +27,8 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 script {
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-creds') {
-                        dockerImage.push('latest')
+                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_CREDENTIALS_ID) {
+                        docker.image(env.IMAGE_NAME).push('latest')
                     }
                 }
             }
