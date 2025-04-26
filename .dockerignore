@@ -9,7 +9,7 @@
 **/.vs
 **/.vscode
 **/*.*proj.user
-**/*.dbmdl
+**/*.dbmdl 
 **/*.jfm
 **/charts
 **/docker-compose*
