@@ -16,9 +16,7 @@ pipeline {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Declare dockerImage properly
                     def dockerImage = docker.build("${DOCKER_IMAGE}:latest")
-                    // Store it in the environment for later use
                     env.IMAGE_NAME = dockerImage.imageName()
                 }
             }
